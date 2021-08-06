@@ -1,14 +1,16 @@
 import React from 'react';
-import {Row} from "react-bootstrap";
+import { Container, Row, Button, Col } from "react-bootstrap";
+
+import ModalInicial from '../ModalComponent/ModalInicial'
 
 const Home = () => {
   return (
-    <div className="d-flex justify-content-center">
-      <Row>
-        <h1>Ultimate</h1>
-        <h2>TicTacToe</h2>
-      </Row>
-    </div>
+    <Container className="d-flex " style={{ width: "100%", height: 700, alignItems: 'center' }}>
+      <ModalInicial />
+
+    </Container>
+
+
   );
 };
 
