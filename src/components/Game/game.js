@@ -3,7 +3,6 @@ import Board from '../Board';
 import './game.css';
 import Title from '../../assets/title.png';
 import Logo from '../../assets/logo.png';
-import HistoryTitle from '../../assets/historyTitle.png';
 
 //determina o ganhador do jogo
 function calculateWinner(squares) {
@@ -28,11 +27,11 @@ function calculateWinner(squares) {
 
 const Game = () => {
   const [state, setState] = useState({
-        history: [{ //histórico de jogadas vários array contento a o valor que foi adicionado no square X ou O
-          squares: Array(9).fill(null),
-        }],
-        stepNumber: 0, //determina em qual jogada o jogo esta
-        xIsNext: true, //determina quem é o próximo a jogar X ou O
+    history: [{ //histórico de jogadas vários array contento a o valor que foi adicionado no square X ou O
+      squares: Array(9).fill(null),
+    }],
+    stepNumber: 0, //determina em qual jogada o jogo esta
+    xIsNext: true, //determina quem é o próximo a jogar X ou O
   })
 
   //evento click do mouse do Square
@@ -56,7 +55,6 @@ const Game = () => {
     });
   }
 
-
   const jumpTo = (step) => {
     setState({
       ...state,
@@ -69,17 +67,6 @@ const Game = () => {
   const current = history[state.stepNumber];
   const winner = calculateWinner(current.squares);
 
-  const moves = history.map((step, move) => {
-    const desc = move ?
-      'Vá para a jogada #' + move :
-      'Vá para o início do jogo';
-    return (
-      <li key={move}>
-        <button className="historyButton" onClick={() => jumpTo(move)}>{desc}</button>
-      </li>
-    );
-  });
-
   let status;
   if (winner) {
     status = 'GANHADOR: ' + winner;
@@ -90,19 +77,24 @@ const Game = () => {
   return (
     <div className="game">
       <div>
-        <img id="imgjogo" src={Logo} alt="Jogo da velha" />
-        <img src={Title} alt="Jogo da velha" />
+        <img id="imgjogo" src={Logo} alt="Jogo da velha"/>
+        <img src={Title} alt="Jogo da velha"/>
       </div>
       <div>
-        <Board squares={current.squares} onClick={(i) => handleClick(i)} />
-      </div>
-      <div><h1>{status}</h1></div>
-      <div>
-        <img src={HistoryTitle} alt="histórico de jogadas" />
-        <ol>{moves}</ol>
+        <Board winner={winner} squares={current.squares} onClick={(i) => handleClick(i)}/>
+        {
+          winner &&
+            <div>
+              <div>
+                {status}
+              </div>
+              <button className="historyButton" onClick={() => jumpTo(0)}>Vá para o início do jogo</button>
+            </div>
+        }
       </div>
     </div>
   );
 
 }
+
 export default Game;
