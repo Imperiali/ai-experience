@@ -66,13 +66,7 @@ const Game = () => {
   const history = state.history;
   const current = history[state.stepNumber];
   const winner = calculateWinner(current.squares);
-
-  let status;
-  if (winner) {
-    status = 'GANHADOR: ' + winner;
-  } else {
-    status = 'PRÓXIMO JOGADOR: ' + (state.xIsNext ? 'X' : 'O');
-  }
+  const endGame = state.stepNumber === 9
 
   return (
     <div className="game">
@@ -83,11 +77,18 @@ const Game = () => {
       <div>
         <Board winner={winner} squares={current.squares} onClick={(i) => handleClick(i)}/>
         {
-          winner &&
+          winner ?
             <div>
               <div>
-                {status}
+                Ganhador: {winner}
               </div>
+              <button className="historyButton" onClick={() => jumpTo(0)}>Vá para o início do jogo</button>
+            </div> :
+            endGame &&
+            <div>
+              <h1>
+                Deu velha!
+              </h1>
               <button className="historyButton" onClick={() => jumpTo(0)}>Vá para o início do jogo</button>
             </div>
         }
