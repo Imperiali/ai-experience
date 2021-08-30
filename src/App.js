@@ -1,9 +1,12 @@
 import Game from "./components/Game";
+import BoardProvider from "./hooks/board";
 
 
 function App() {
   return (
-    <Game />
+    <BoardProvider>
+      <Game />
+    </BoardProvider>
   );
 }
 
