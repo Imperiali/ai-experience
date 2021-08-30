@@ -3,7 +3,7 @@ import Square from '../Square';
 import './board.css';
 
 const Board = (props) => {
-  const { squares, onClick } = props;
+  const { winner, squares, onClick } = props;
 
   const renderSquare = (i) => {
     return (
@@ -14,7 +14,8 @@ const Board = (props) => {
   }
 
   return (
-    <div>
+    <div className="board-wrapper">
+      { winner && <div className="winner">{winner}</div>}
       <div className="board-row">
         {renderSquare(0)}
         {renderSquare(1)}
