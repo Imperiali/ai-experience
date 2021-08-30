@@ -1,12 +1,12 @@
 import React from 'react';
-import Board from '../Board';
 import './game.css';
 import Title from '../../assets/title.png';
 import Logo from '../../assets/logo.png';
-import {useBoard} from "../../hooks/board";
+import SuperBoard from "../SuperBoard";
+import {useSuperBoard} from "../../hooks/superBoard";
 
 const Game = () => {
-  const { restart, winner, endGame } = useBoard()
+  const { restart, winner, endGame } = useSuperBoard()
 
   return (
     <div className="game">
@@ -15,7 +15,7 @@ const Game = () => {
         <img src={Title} alt="Jogo da velha"/>
       </div>
       <div>
-        <Board winner={winner}/>
+        <SuperBoard/>
         {
           winner ?
             <div>
