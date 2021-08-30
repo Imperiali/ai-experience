@@ -1,72 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Board from '../Board';
 import './game.css';
 import Title from '../../assets/title.png';
 import Logo from '../../assets/logo.png';
-
-//determina o ganhador do jogo
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
+import {useBoard} from "../../hooks/board";
 
 const Game = () => {
-  const [state, setState] = useState({
-    history: [{ //histórico de jogadas vários array contento a o valor que foi adicionado no square X ou O
-      squares: Array(9).fill(null),
-    }],
-    stepNumber: 0, //determina em qual jogada o jogo esta
-    xIsNext: true, //determina quem é o próximo a jogar X ou O
-  })
-
-  //evento click do mouse do Square
-  const handleClick = (i) => {
-    const history = state.history.slice(0, state.stepNumber + 1); //retorna uma cópia do array
-    const current = history[history.length - 1]; //pega o array corrente do history
-    const squares = current.squares.slice(); //faz uma cópia do objeto que esta no array current
-
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-
-    squares[i] = state.xIsNext ? 'X' : 'O';
-
-    setState({
-      history: history.concat([{
-        squares: squares,
-      }]),
-      stepNumber: history.length,
-      xIsNext: !state.xIsNext,
-    });
-  }
-
-  const jumpTo = (step) => {
-    setState({
-      ...state,
-      stepNumber: step,
-      xIsNext: (step % 2) === 0,
-    })
-  }
-
-  const history = state.history;
-  const current = history[state.stepNumber];
-  const winner = calculateWinner(current.squares);
-  const endGame = state.stepNumber === 9
+  const { restart, winner, endGame } = useBoard()
 
   return (
     <div className="game">
@@ -75,21 +15,21 @@ const Game = () => {
         <img src={Title} alt="Jogo da velha"/>
       </div>
       <div>
-        <Board winner={winner} squares={current.squares} onClick={(i) => handleClick(i)}/>
+        <Board winner={winner}/>
         {
           winner ?
             <div>
               <div>
                 Ganhador: {winner}
               </div>
-              <button className="historyButton" onClick={() => jumpTo(0)}>Vá para o início do jogo</button>
+              <button className="historyButton" onClick={() => restart()}>Vá para o início do jogo</button>
             </div> :
             endGame &&
             <div>
               <h1>
                 Deu velha!
               </h1>
-              <button className="historyButton" onClick={() => jumpTo(0)}>Vá para o início do jogo</button>
+              <button className="historyButton" onClick={() => restart()}>Vá para o início do jogo</button>
             </div>
         }
       </div>
