@@ -6,7 +6,7 @@
     text-align: center;
   }
 
-  
+
   ol, ul {
     padding-left: 30px;
   }
@@ -14,10 +14,6 @@
   #imgjogo{
     height: 100px;
     width: 100px;
-  }
-
-  .game h1{
-    color: white;
   }
 
   .historyButton{

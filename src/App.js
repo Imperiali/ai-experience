@@ -1,13 +1,9 @@
-import Home from "./components/home";
-import { Container } from "react-bootstrap";
-import Board from './components/Board';
+import Game from "./components/Game";
 
 
 function App() {
   return (
-    <Container fluid>
-      <Board />
-    </Container>
+    <Game />
   );
 }
 
