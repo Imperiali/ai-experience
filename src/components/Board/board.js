@@ -1,35 +1,29 @@
 import React from 'react';
 import Square from '../Square';
 import './board.css';
+import {useBoard} from "../../hooks/board";
 
-const Board = (props) => {
-  const { winner, squares, onClick } = props;
-
-  const renderSquare = (i) => {
-    return (
-      <Square
-        value={squares[i]}
-        onClick={() => onClick(i)}/>
-    )
-  }
+const Board = () => {
+  // const { boardId } = props;
+  const {winner} = useBoard()
 
   return (
     <div className="board-wrapper">
       { winner && <div className="winner">{winner}</div>}
       <div className="board-row">
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
+        <Square squareId={0}/>
+        <Square squareId={1}/>
+        <Square squareId={2}/>
       </div>
       <div className="board-row">
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
+        <Square squareId={3}/>
+        <Square squareId={4}/>
+        <Square squareId={5}/>
       </div>
       <div className="board-row">
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
+        <Square squareId={6}/>
+        <Square squareId={7}/>
+        <Square squareId={8}/>
       </div>
     </div>
   );
