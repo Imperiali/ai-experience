@@ -21,6 +21,17 @@ export const superBoardReducer = (state, action) => {
         ...state,
         winner: action.winner
       }
+    case 'SET_DRAW':
+      return {
+        ...state,
+        boards: state.boards.map((board, index) => {
+          if (index !== action.boardId) return board
+          return {
+            ...board,
+            winner: 'D'
+          }
+        }),
+      }
     case 'SET_WINNER':
       return {
         ...state,

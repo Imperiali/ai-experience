@@ -8,13 +8,17 @@ import Winner from "../Winner";
 
 const Board = (props) => {
   const { hasBorder = false, boardId } = props
-  const { board, setWinner } = useSuperBoard(boardId)
+  const { board, setWinner, setDraw } = useSuperBoard(boardId)
 
   const winner = calculateWinner(board.squares)
 
   useEffect(() => {
     if (winner) {
       setWinner()
+      return
+    }
+    if (board.length > 8){
+      setDraw()
     }
   }, [winner])
 
