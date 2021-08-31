@@ -1,10 +1,13 @@
 import Game from "./components/Game";
+import SuperBoardProvider from "./hooks/superBoard";
 
 
 function App() {
   return (
-    <Game />
-  );
+    <SuperBoardProvider>
+      <Game />
+    </SuperBoardProvider>
+);
 }
 
 export default App;
