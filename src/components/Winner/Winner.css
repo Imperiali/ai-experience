@@ -1,0 +1,9 @@
+.image-wrapper {
+    position: absolute;
+    width: 100%;
+}
+
+.super {
+    z-index: 1;
+    max-width: 60vh;
+}
