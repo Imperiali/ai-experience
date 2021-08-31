@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "cp -R build/. docs",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
