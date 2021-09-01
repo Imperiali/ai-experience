@@ -12,7 +12,7 @@ const Game = () => {
     <div className="game">
       <div>
         <img id="imgjogo" src={Logo} alt="Jogo da velha"/>
-        <img src={Title} alt="Jogo da velha"/>
+        <img width='100%' className='image-title' src={Title} alt="Jogo da velha"/>
       </div>
       <div>
         <SuperBoard/>

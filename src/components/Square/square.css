@@ -1,18 +1,30 @@
+:root {
+  --size: 9vw
+}
+
 .square {
-    background: #fff;
-    border: 1px solid #999;
-    float: left;
-    font-size: 80px;
-    font-weight: bold;
-    line-height: 34px;
-    height: 90px;
-    margin-right: -1px;
-    margin-top: -1px;
-    padding: 0;
-    text-align: center;
-    width: 90px;
-  }
-  
-  .square:focus {
-    outline: none;
-  }
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: var(--size);
+  font-weight: bold;
+  line-height: 34px;
+  height: var(--size);
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: var(--size);
+  max-width: 9vh;
+  max-height: 9vh;
+}
+
+.square:focus {
+  outline: none;
+}
+
+@media only screen and (min-width: 1440px) {
+ .square {
+   font-size: 6vw
+ }
+}

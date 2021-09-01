@@ -1,25 +1,23 @@
 
 .game {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
 
 
-  ol, ul {
-    padding-left: 30px;
-  }
+.image-title {
+    max-width: 80vw;
+}
 
-  #imgjogo{
-    height: 100px;
-    width: 100px;
-  }
+#imgjogo {
+  width: 10vw;
+}
 
-  .historyButton{
-    width: 270px;
-    height: 40px;
-    font-size: 15px;
-    font-weight: bolder;
-
-  }
+.historyButton {
+  width: 270px;
+  height: 40px;
+  font-size: 15px;
+  font-weight: bolder;
+}
