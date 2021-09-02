@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './game.css';
 import Title from '../../assets/title.png';
 import Logo from '../../assets/logo.png';
@@ -6,7 +6,18 @@ import SuperBoard from "../SuperBoard";
 import {useSuperBoard} from "../../hooks/superBoard";
 
 const Game = () => {
-  const { restart, winner, endGame } = useSuperBoard()
+  const { restart, winner, endGame, xIsNext, availableMoves, checkAvailableMoves } = useSuperBoard()
+
+  if (!xIsNext){
+    // checkAvailableMoves()
+    console.log('availableMoves', availableMoves)
+    // console.log('boards', boards.filter((e) => Boolean(e)))
+    // let randomBoardId = Math.random()
+  }
+
+  useEffect(() => {
+    checkAvailableMoves()
+  }, [xIsNext])
 
   return (
     <div className="game">
