@@ -7,7 +7,7 @@ const UseSuperBoard = (boardId) => {
 
   const winners = boards.map(board => board.winner)
 
-  const endGame = winners.filter(Boolean).length > 7
+  const endGame = winners.filter(Boolean).length > 8
 
   const calculateSuperWinner = () => {
     return calculateWinner(winners)
@@ -23,7 +23,7 @@ const UseSuperBoard = (boardId) => {
     availableMoves,
     checkAvailableMoves: () => dispatch({ type: 'SET_AVAILABLE_MOVES'}),
     restart: () => dispatch({type: 'RESTART'}),
-    updateTurn: (squareId) => dispatch({type: 'UPDATE_TURN', squareId, boardId}),
+    updateTurn: (boardId, squareId) => dispatch({type: 'UPDATE_TURN', squareId, boardId}),
     setWinner: () => dispatch({type: 'SET_WINNER', boardId}),
     setDraw: () => dispatch({type: 'SET_DRAW', boardId}),
     setSuperWinner: () => dispatch({type: 'SET_SUPER_WINNER', winner: calculateSuperWinner()}),

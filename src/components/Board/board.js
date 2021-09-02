@@ -20,6 +20,7 @@ const Board = (props) => {
     if (board.length > 8){
       setDraw()
     }
+    // eslint-disable-next-line
   }, [winner])
 
   return (

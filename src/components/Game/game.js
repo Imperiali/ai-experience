@@ -6,16 +6,23 @@ import SuperBoard from "../SuperBoard";
 import {useSuperBoard} from "../../hooks/superBoard";
 
 const Game = () => {
-  const { restart, winner, endGame, xIsNext, availableMoves, checkAvailableMoves } = useSuperBoard()
+  const { restart, winner, endGame, stepNumber, xIsNext, availableMoves, checkAvailableMoves, updateTurn } = useSuperBoard()
 
-  if (!xIsNext){
-    console.log('availableMoves', availableMoves)
-    let randomPlay = Math.floor(Math.random() * (availableMoves.length + 1))
-    console.log('play', availableMoves[randomPlay])
+  const getRandomPlay = (max) => {
+    let randomPlay = Math.floor(Math.random() * (max + 1))
+    if (!availableMoves[randomPlay]) {
+      return getRandomPlay(max)
+    }
+    return availableMoves[randomPlay]
   }
 
   useEffect(() => {
     checkAvailableMoves()
+    if (!xIsNext && stepNumber > 0){
+      const [boardId, squareId] = getRandomPlay(availableMoves?.length)
+      updateTurn(boardId, squareId)
+    }
+    // eslint-disable-next-line
   }, [xIsNext])
 
   return (

@@ -13,7 +13,7 @@ const Square = (props) => {
       return;
     }
 
-    updateTurn(squareId)
+    updateTurn(boardId, squareId)
   }
 
   return (

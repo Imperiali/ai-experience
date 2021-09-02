@@ -3,9 +3,9 @@ import React, {useMemo, useReducer} from 'react';
 export const SuperBoardContext = React.createContext()
 
 const checkAvailableMoves = (boards) => boards.map((board, boardIndex) => {
-  if(board.winner !== null) return
+  if(board.winner !== null) return null
   return board.squares.map((square, squareIndex) => {
-    if (square !== null) return
+    if (square !== null) return null
     return [boardIndex, squareIndex]
   })
 }).flat()
@@ -59,6 +59,7 @@ export const superBoardReducer = (state, action) => {
       }
     case 'UPDATE_TURN':
       return {
+        ...state,
         boards: state.boards.map((board, bindex) => {
           if (bindex !== action.boardId) return board
           return {
