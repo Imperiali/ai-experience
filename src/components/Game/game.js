@@ -9,10 +9,9 @@ const Game = () => {
   const { restart, winner, endGame, xIsNext, availableMoves, checkAvailableMoves } = useSuperBoard()
 
   if (!xIsNext){
-    // checkAvailableMoves()
     console.log('availableMoves', availableMoves)
-    // console.log('boards', boards.filter((e) => Boolean(e)))
-    // let randomBoardId = Math.random()
+    let randomPlay = Math.floor(Math.random() * (availableMoves.length + 1))
+    console.log('play', availableMoves[randomPlay])
   }
 
   useEffect(() => {
