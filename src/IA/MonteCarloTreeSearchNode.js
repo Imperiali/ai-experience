@@ -1,7 +1,8 @@
-const nj = require('numjs');
+import nj from 'numjs';
+import {useSuperBoard} from "../hooks/superBoard";
 
-class MonteCarloTreeSearchNode {
-  constructor(state, parent=null, parent_action=null) {
+export const MonteCarloTreeSearchNode = () => {
+  function init(state, parent=null, parent_action=null) {
     this.state = state
     this.parent = parent
     this.parent_action = parent_action
@@ -9,27 +10,28 @@ class MonteCarloTreeSearchNode {
     this._number_of_visitis = 0
     this._results = []
     this._results[1] = 0
-    this._results[-1]= 0
+    this._results[-1] = 0
     this._untried_actions = null
-    this._untried_actions = this.untried_actions()
+    this._untried_actions = untried_actions()
+    this.endGame = false
   }
 
-  untried_actions() {
+  function untried_actions() {
     this._untried_actions = this.state.get_legal_actions()
     return this._untried_actions
   }
 
-  q() {
+  function q() {
     let wins = this._results[1]
     let loses = this._results[-1]
     return wins - loses
   }
 
-  n() {
+  function n() {
     return this._number_of_visitis
   }
 
-  expand() {
+  function expand() {
     let action = this._untried_actions.pop()
     let next_state = this.state.move(action)
     let child_node = new MonteCarloTreeSearchNode(next_state, this, action)
@@ -37,11 +39,11 @@ class MonteCarloTreeSearchNode {
     return child_node
   }
 
-  is_terminal_node() {
+  function is_terminal_node() {
     return this.state.is_game_over()
   }
 
-  rollout() {
+  function rollout() {
     let current_rollout_state = this.state
 
     while (!current_rollout_state.is_game_over()) {
@@ -54,7 +56,7 @@ class MonteCarloTreeSearchNode {
     return current_rollout_state
   }
 
-  backpropagate(result) {
+  function backpropagate(result) {
     this._number_of_visitis += 1
     this._results[result] += 1
     if (this.parent) {
@@ -62,26 +64,26 @@ class MonteCarloTreeSearchNode {
     }
   }
 
-  is_fully_expanded() {
+  function is_fully_expanded() {
     return this._untried_actions.length === 0
   }
 
-  _argMax(array) {
+  function _argMax(array) {
     return [].reduce.call(array, (m, c, i, arr) => c > arr[m] ? i : m, 0)
   }
 
-  best_child(c_param= 0.1) {
+  function best_child(c_param= 0.1) {
     let choices_weights = this.children.map((child) => {
       return (child.q() / child.n()) + c_param * nj.sqrt((2 * nj.log(this.n()) / child.n()))
     })
-    return this.children[this._argMax(choices_weights)]
+    return this.children[_argMax(choices_weights)]
   }
 
-  rollout_policy(possible_moves) {
+  function rollout_policy(possible_moves) {
     return possible_moves[Math.floor(Math.random() * (possible_moves.length + 1))]
   }
 
-  _tree_policy() {
+  function _tree_policy() {
     let current_node = this
     while (!current_node.is_terminal_node()) {
       if (!current_node.is_fully_expanded()){
@@ -93,71 +95,70 @@ class MonteCarloTreeSearchNode {
     return current_node
   }
 
-  best_action() {
+  function best_action() {
     let simulation_no = 100
 
     simulation_no.map(() => {
-      let v = this._tree_policy()
+      let v = _tree_policy()
       let reward = v.rollout()
       v.backpropagate(reward)
     })
 
-    return this.best_child(0.)
+    return best_child(0.)
   }
 
-  get_legal_actions() {
-    //
-    //     '''
-    //     Modify according to your game or
-    //     needs. Constructs a list of all
-    //     possible actions from current state.
-    //     Returns a list.
-    //     '''
-    //
+  function get_legal_actions() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { availableMoves } = useSuperBoard()
+
+    return availableMoves
   }
 
-  is_game_over() {
-    /*
-    '''
-    Modify according to your game or
-    needs. It is the game over condition
-    and depends on your game. Returns
-    true or false
-    '''
-    * */
+  function is_game_over() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { endGame } = useSuperBoard()
+
+    return endGame
   }
 
-  game_result() {
-    /*
-        '''
-    Modify according to your game or
-    needs. Returns 1 or 0 or -1 depending
-    on your state corresponding to win,
-    tie or a loss.
-    '''
-     */
+  // function game_result() {
+  //   /*
+  //       '''
+  //   Modify according to your game or
+  //   needs. Returns 1 or 0 or -1 depending
+  //   on your state corresponding to win,
+  //   tie or a loss.
+  //   '''
+  //    */
+  // }
+
+  function move(action) {
+    let [ boardId, squareId ] = action
+
+    return [boardId, squareId]
   }
 
-  move(action) {
-    /*
-        '''
-    Modify according to your game or
-    needs. Changes the state of your
-    board with a new value. For a normal
-    Tic Tac Toe game, it can be a 3 by 3
-    array with all the elements of array
-    being 0 initially. 0 means the board
-    position is empty. If you place x in
-    row 2 column 3, then it would be some
-    thing like board[2][3] = 1, where 1
-    represents that x is placed. Returns
-    the new state after making a move.
-    '''
-     */
-  }
+  // main() {
+  //   let root = new MonteCarloTreeSearchNode()
+  //   let selected_node = root.best_action()
+  // }
 
-  main() {
-    let root = new MonteCarloTreeSearchNode()
-    let selected_node = root.best_action()
+  return {
+    init,
+    q,
+    n,
+    expand,
+    untried_actions,
+    is_terminal_node,
+    rollout,
+    backpropagate,
+    is_fully_expanded,
+    best_child,
+    rollout_policy,
+    best_action,
+    get_legal_actions,
+    is_game_over,
+    // game_result,
+    move
   }
 }
