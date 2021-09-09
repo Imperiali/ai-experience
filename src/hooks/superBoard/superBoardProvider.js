@@ -17,8 +17,10 @@ const InitialState = {
   }),
   availableMoves: Array(9).fill(Array(9).fill(null)),
   winner: null,
-  stepNumber: 0, //determina em qual jogada o jogo esta
-  xIsNext: true, //determina quem é o próximo a jogar X ou O
+  stepNumber: 0,
+  xIsNext: true,
+  lastMove: null,
+  endGame: false
 }
 
 export const superBoardReducer = (state, action) => {
@@ -53,9 +55,17 @@ export const superBoardReducer = (state, action) => {
         }),
       }
     case 'SET_AVAILABLE_MOVES':
+      const endGame = state.winners.filter(Boolean).length > 8
+      const availableMoves = checkAvailableMoves(state.boards)
+      if (endGame) {
+        IAPlayer.is_game_over(endGame)
+      }
+      IAPlayer.get_legal_actions(availableMoves)
+
       return {
         ...state,
-        availableMoves: checkAvailableMoves(state.boards)
+        availableMoves,
+        endGame
       }
     case 'UPDATE_TURN':
       return {
@@ -70,6 +80,7 @@ export const superBoardReducer = (state, action) => {
             })
           }
         }),
+        lastMove: [action.boardId, action.squareId],
         stepNumber: state.stepNumber + 1,
         xIsNext: !state.xIsNext,
       }

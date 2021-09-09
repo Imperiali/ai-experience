@@ -3,11 +3,9 @@ import {SuperBoardContext} from "../superBoardProvider";
 import {calculateWinner} from "../../../components/utils/calculateWinner";
 
 const UseSuperBoard = (boardId) => {
-  const { state: {boards, stepNumber, xIsNext, winner, availableMoves}, dispatch } = useContext(SuperBoardContext)
+  const { state: {boards, stepNumber, xIsNext, winner, endGame, availableMoves}, dispatch } = useContext(SuperBoardContext)
 
   const winners = boards.map(board => board.winner)
-
-  const endGame = winners.filter(Boolean).length > 8
 
   const calculateSuperWinner = () => {
     return calculateWinner(winners)
