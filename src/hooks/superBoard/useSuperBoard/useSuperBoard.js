@@ -3,7 +3,7 @@ import {SuperBoardContext} from "../superBoardProvider";
 import {calculateWinner} from "../../../components/utils/calculateWinner";
 
 const UseSuperBoard = (boardId) => {
-  const { state: {boards, stepNumber, xIsNext, winner, endGame, availableMoves}, dispatch } = useContext(SuperBoardContext)
+  const { state: {boards, stepNumber, xIsNext, winner, endGame, availableMoves, lastMove}, dispatch } = useContext(SuperBoardContext)
 
   const winners = boards.map(board => board.winner)
 
@@ -19,6 +19,7 @@ const UseSuperBoard = (boardId) => {
     endGame,
     board: boards[boardId],
     availableMoves,
+    lastMove,
     checkAvailableMoves: () => dispatch({ type: 'SET_AVAILABLE_MOVES'}),
     restart: () => dispatch({type: 'RESTART'}),
     updateTurn: (boardId, squareId) => dispatch({type: 'UPDATE_TURN', squareId, boardId}),
