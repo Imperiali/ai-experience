@@ -7,18 +7,7 @@ import {useSuperBoard} from "../../hooks/superBoard";
 import {calculateWinner} from "../utils/calculateWinner";
 
 const Game = () => {
-  const { restart, boards, winner, endGame, stepNumber, xIsNext, availableMoves, lastMove, checkAvailableMoves, updateTurn } = useSuperBoard()
-
-  const getRandomPlay = (moves) => {
-    const max = moves.length
-    let randomPlay = Math.floor(Math.random() * (max + 1))
-    console.log('moves[randomPlay]', moves[randomPlay])
-    if (!moves[randomPlay] || moves[randomPlay] === lastMove[1]) {
-      console.log('lastMove', lastMove)
-      return getRandomPlay(moves)
-    }
-    return moves[randomPlay]
-  }
+  const { restart, boards, winner, endGame, stepNumber, xIsNext, lastMove, checkAvailableMoves, updateTurn } = useSuperBoard()
 
   const random = (board) => {
     let randomPlay = Math.floor(Math.random() * (board.length + 1))
@@ -52,14 +41,53 @@ const Game = () => {
     return [hasWinner, firstMove]
   }
 
+  const scoreManager = (board, scores, winner) => {
+    if(winner === 'O') {
+      board.forEach((player, pos) => {
+        if (player === 'O') scores[pos] += 1
+        if (player === 'X') scores[pos] -= 1
+      })
+    } else if (winner === 'X') {
+      board.forEach((player, pos) => {
+        if (player === 'O') scores[pos] -= 1
+        if (player === 'X') scores[pos] += 1
+      })
+    }
+    return scores
+  }
+
+  const classification = (board, trials) => {
+    let scores = Array(9).fill(0)
+    for (let i = 0; i < trials; i++) {
+      const _board = board.slice()
+      const [ winner ] = simulateTurns(_board)
+      scores = scoreManager(_board, scores, winner)
+    }
+    return scores
+  }
+
+  const bestMove = (moves, board, scores) => {
+    let _scores = scores.slice()
+    _scores.forEach((score, move) => {
+      if (!(move in moves)) _scores[move] = -1
+      if (board[move] === 'X') _scores[move] = -1
+    })
+    return _scores.indexOf(Math.max(..._scores))
+  }
+
   const iaTurn = () => {
-    let _board = boards[lastMove[0]].squares.slice()
+    const [ boardId ] = lastMove
+    let _board = boards[boardId].squares.slice()
+    // TODO Se o boardId já tiver concluido, precisa jogar em outro board
+    const scores = classification(_board, 20)
 
-    const [winner, move] = simulateTurns(_board)
+    let moves = _board.map((move, pos) => {
+      if (move) return pos
+    })
 
-    console.log('winner', winner)
-    console.log('move', move)
+    const move = bestMove(moves, _board, scores)
 
+    updateTurn(boardId, move)
   }
 
   useEffect(() => {
