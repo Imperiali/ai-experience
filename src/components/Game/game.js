@@ -76,14 +76,40 @@ const Game = () => {
   }
 
   const iaTurn = () => {
-    const [ boardId ] = lastMove
+    let [ boardId ] = lastMove
+
+    let hasMoves = boards[boardId].squares.filter(square => !square).length > 0
+
+    if (calculateWinner(boards[boardId].squares) || !hasMoves) {
+
+      let _board = boards.map(board => {
+        let winner = board.winner ? board.winner : null
+        const isDraw = board.squares.filter(Boolean).length > 9
+
+        return winner || isDraw
+      } ).slice()
+
+      console.log('_board', _board)
+
+      const scores = classification(_board, 20)
+
+      let moves = _board.map((move, pos) => {
+        if (move) return pos
+      })
+
+      boardId = bestMove(moves, _board, scores)
+    }
+
+    console.log('boardId', boardId)
+
     let _board = boards[boardId].squares.slice()
-    // TODO Se o boardId já tiver concluido, precisa jogar em outro board
+
     const scores = classification(_board, 20)
 
     let moves = _board.map((move, pos) => {
       if (move) return pos
     })
+
 
     const move = bestMove(moves, _board, scores)
 
