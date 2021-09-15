@@ -1,12 +1,13 @@
 :root {
-  --size: 5vw
+  --font-size: 5vw;
+  --size: 7vw
 }
 
 .square {
   background: #fff;
   border: 1px solid #999;
   float: left;
-  font-size: var(--size);
+  font-size: var(--font-size);
   font-weight: bold;
   line-height: 34px;
   height: var(--size);

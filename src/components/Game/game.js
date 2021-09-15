@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react';
 import './game.css';
-import Title from '../../assets/title.png';
-import Logo from '../../assets/logo.png';
 import SuperBoard from "../SuperBoard";
 import {useSuperBoard} from "../../hooks/superBoard";
 import {calculateWinner} from "../utils/calculateWinner";
+import Title from "../Title";
 
 const Game = () => {
   const { restart, boards, winner, endGame, stepNumber, xIsNext, lastMove, checkAvailableMoves, updateTurn } = useSuperBoard()
@@ -135,10 +134,7 @@ const Game = () => {
 
   return (
     <div className="game">
-      <div>
-        <img id="imgjogo" src={Logo} alt="Jogo da velha"/>
-        <img width='100%' className='image-title' src={Title} alt="Jogo da velha"/>
-      </div>
+      <Title/>
       <div>
         <SuperBoard/>
         {
