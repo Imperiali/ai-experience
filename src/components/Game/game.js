@@ -69,8 +69,12 @@ const Game = () => {
   const bestMove = (moves, board, scores) => {
     let _scores = scores.slice()
     _scores.forEach((score, move) => {
-      if (!(move in moves)) _scores[move] = -1
-      if (board[move] === 'X') _scores[move] = -1
+      if (!(move in moves)) {
+        return _scores[move] = -1
+      }
+      if (board[move]) {
+        return _scores[move] = -1
+      }
     })
     return _scores.indexOf(Math.max(..._scores))
   }
@@ -79,28 +83,34 @@ const Game = () => {
     let [ boardId ] = lastMove
 
     let hasMoves = boards[boardId].squares.filter(square => !square).length > 0
+    let hasWinner = calculateWinner(boards[boardId].squares)
 
-    if (calculateWinner(boards[boardId].squares) || !hasMoves) {
+    if (hasWinner || !hasMoves) {
 
-      let _board = boards.map(board => {
-        let winner = board.winner ? board.winner : null
-        const isDraw = board.squares.filter(Boolean).length > 9
+      let _superBoard = boards.map((board, pos) => {
 
-        return winner || isDraw
-      } ).slice()
+        let winner = null
 
-      console.log('_board', _board)
+        if ( pos === boardId && hasWinner) return hasWinner
+        if ( board.winner ) return board.winner
 
-      const scores = classification(_board, 20)
+        const isDraw = board.squares.filter(Boolean).length > 7
 
-      let moves = _board.map((move, pos) => {
+        if (board.winner === null && isDraw) {
+          winner = -1
+        }
+
+        return winner
+      }).slice()
+
+      const scores = classification(_superBoard, 20)
+
+      let moves = _superBoard.map((move, pos) => {
         if (move) return pos
       })
 
-      boardId = bestMove(moves, _board, scores)
+     boardId = bestMove(moves, _superBoard, scores)
     }
-
-    console.log('boardId', boardId)
 
     let _board = boards[boardId].squares.slice()
 
@@ -109,7 +119,6 @@ const Game = () => {
     let moves = _board.map((move, pos) => {
       if (move) return pos
     })
-
 
     const move = bestMove(moves, _board, scores)
 

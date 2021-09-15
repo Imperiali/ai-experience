@@ -1,5 +1,4 @@
 import React, {useMemo, useReducer} from 'react';
-// import MonteCarloTreeSearchNode from '../../IA/MonteCarloTreeSearchNode'
 
 export const SuperBoardContext = React.createContext()
 
@@ -24,18 +23,10 @@ const InitialState = {
   endGame: false
 }
 
-const IAInitialState = {}
-
 export const superBoardReducer = (state, action) => {
-  // let IAPlayer = new MonteCarloTreeSearchNode(IAInitialState)
-
   switch (action.type) {
     case 'RESTART':
-      // IAPlayer = new MonteCarloTreeSearchNode(IAInitialState)
       return InitialState
-    // case 'IA_TURN':
-    //   IAPlayer.best_action()
-    //   return state
     case 'SET_SUPER_WINNER':
       return {
         ...state,
@@ -64,8 +55,8 @@ export const superBoardReducer = (state, action) => {
         }),
       }
     case 'SET_AVAILABLE_MOVES':
-      const endGame = state.winners?.filter(Boolean).length > 8
       const availableMoves = checkAvailableMoves(state.boards)
+      const endGame = state.winners?.filter(Boolean).length > 7 || state.boards.map(board => board.squares.filter(Boolean).length > 7).filter(Boolean).length > 7
 
       return {
         ...state,
