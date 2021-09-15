@@ -56,7 +56,7 @@ export const superBoardReducer = (state, action) => {
       }
     case 'SET_AVAILABLE_MOVES':
       const availableMoves = checkAvailableMoves(state.boards)
-      const endGame = state.winners?.filter(Boolean).length > 7 || state.boards.map(board => board.squares.filter(Boolean).length > 7).filter(Boolean).length > 7
+      const endGame = availableMoves.filter(Boolean).length < 1 || state.winners?.filter(Boolean).length > 7 || state.boards.map(board => board.squares.filter(Boolean).length > 7).filter(Boolean).length > 7
 
       return {
         ...state,
