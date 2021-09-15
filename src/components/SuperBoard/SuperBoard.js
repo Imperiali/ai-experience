@@ -5,11 +5,12 @@ import './superBoard.css'
 import Winner from "../Winner";
 
 const SuperBoard = () => {
-  const { winner, setSuperWinner } = useSuperBoard()
+  const { boards, winner, setSuperWinner } = useSuperBoard()
 
   useEffect(() => {
     setSuperWinner()
-  }, [winner])
+    // eslint-disable-next-line
+  }, [boards])
 
   return (
     <div className="super-board-wrapper">
